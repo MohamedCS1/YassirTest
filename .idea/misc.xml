@@ -3,8 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/YassirMovies/app/src/main/res/drawable/radius_background.xml" value="0.1925" />
         <entry key="..\:/Users/Acer/AndroidStudioProjects/YassirMovies/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
-        <entry key="..\:/Users/Acer/AndroidStudioProjects/YassirMovies/app/src/main/res/layout/card_movie.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/Acer/AndroidStudioProjects/YassirMovies/app/src/main/res/layout/card_movie.xml" value="0.6" />
       </map>
     </option>
   </component>

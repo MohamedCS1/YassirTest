@@ -4,6 +4,8 @@ import com.example.yassirmovies.model.Movies
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 class MovieClient() {
     var BASEURL:String = "https://api.themoviedb.org/3/"
@@ -13,9 +15,7 @@ class MovieClient() {
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASEURL)
-            .addConverterFactory(
-                GsonConverterFactory.create()
-            ).build()
+            .addConverterFactory(GsonConverterFactory.create()).build()
         MoviesInterface = retrofit.create(com.example.yassirmovies.data.MoviesInterface::class.java)
     }
 

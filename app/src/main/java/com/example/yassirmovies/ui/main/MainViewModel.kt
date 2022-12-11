@@ -10,9 +10,7 @@ import androidx.lifecycle.ViewModel
 import com.example.yassirmovies.data.MovieClient
 import com.example.yassirmovies.model.Movies
 import kotlinx.coroutines.currentCoroutineContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import retrofit2.*
 
 class MainViewModel(val application: Application):ViewModel() {
 
