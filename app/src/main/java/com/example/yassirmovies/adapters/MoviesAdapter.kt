@@ -8,18 +8,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yassirmovies.R
-import com.example.yassirmovies.model.Movies
+import com.example.yassirmovies.model.Movie
 
 class MoviesAdapter:RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
-    var arrayMovies = arrayListOf<Movies>()
+    var arrayMovies = arrayListOf<Movie>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
         return MoviesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.card_movie ,parent ,false))
     }
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
-        holder.title.text = arrayMovies[0].results[position].title
-        holder.releaseDate.text = arrayMovies[0].results[position].release_date
+        holder.title.text = arrayMovies[position].title
+        holder.releaseDate.text = arrayMovies[position].release_date
     }
 
     override fun getItemCount(): Int {
@@ -34,7 +34,7 @@ class MoviesAdapter:RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setMoviesList(arrayOfMovies:ArrayList<Movies>)
+    fun setMoviesList(arrayOfMovies: ArrayList<Movie>)
     {
         this.arrayMovies = arrayOfMovies
         notifyDataSetChanged()

@@ -5,6 +5,6 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface MoviesInterface {
-    @GET("discover/movie")
+    @GET("trending/all/week")
     fun getTrendingMovies(@Query("api_key") apiKey:String):Call<Movies>
 }

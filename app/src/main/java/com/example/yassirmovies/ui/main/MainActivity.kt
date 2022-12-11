@@ -3,26 +3,38 @@ package com.example.yassirmovies.ui.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.yassirmovies.R
+import com.example.yassirmovies.adapters.MoviesAdapter
 import com.example.yassirmovies.data.MovieClient
+import com.example.yassirmovies.databinding.ActivityMainBinding
 import com.example.yassirmovies.model.Movies
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
+    lateinit var moviesAdapter:MoviesAdapter
+    lateinit var linearLayoutManager: LinearLayoutManager
+    lateinit var binding: ActivityMainBinding
+    lateinit var mainViewModel:MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        moviesAdapter = MoviesAdapter()
+        linearLayoutManager = LinearLayoutManager(this)
+        mainViewModel = MainViewModel(this.application)
 
-        MovieClient().getMovies("c9856d0cb57c3f14bf75bdc6c063b8f3").enqueue(object :Callback<Movies>{
-            override fun onResponse(call: Call<Movies>, response: Response<Movies>) {
-                Log.d("CurrentResponse" , response.body()?.results!![0].title.toString())
-            }
+        binding.recyclerViewMoviesTrending.adapter = moviesAdapter
+        binding.recyclerViewMoviesTrending.layoutManager = linearLayoutManager
+        mainViewModel.getTrendingMovies()
 
-            override fun onFailure(call: Call<Movies>, t: Throwable) {
-                Log.d("CurrentResponse" ,t.message.toString())
-
+        mainViewModel.moviesMutableLiveData.observe(this ,object :Observer<Movies>{
+            override fun onChanged(movies: Movies) {
+                moviesAdapter.setMoviesList(movies.results)
             }
         })
     }
