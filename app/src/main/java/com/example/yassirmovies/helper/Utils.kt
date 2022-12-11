@@ -2,6 +2,7 @@ package com.example.yassirmovies.helper
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import com.example.yassirmovies.model.Genres
 
 class Utils {
     fun getColorByUserScore(score:Int): ColorStateList
@@ -16,4 +17,17 @@ class Utils {
         }
         return ColorStateList.valueOf(Color.WHITE)
     }
+
+    fun turnGenresToCategoriesString(arrayGenres: ArrayList<Genres>):String
+    {
+        val categories = arrayListOf<String>()
+
+        for (genres in arrayGenres)
+        {
+            categories.add(genres.name)
+        }
+
+        return categories.joinToString(" - ")
+    }
+
 }

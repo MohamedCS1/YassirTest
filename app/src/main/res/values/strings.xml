@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">YassirMovies</string>
+    <string name="overview">Overview</string>
+    <string name="user_score">User Score</string>
+    <string name="_18">+18</string>
+    <string name="title">Title</string>
+    <string name="release_date">Release_date</string>
 </resources>

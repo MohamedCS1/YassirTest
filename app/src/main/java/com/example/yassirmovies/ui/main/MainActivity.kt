@@ -11,7 +11,7 @@ import com.example.yassirmovies.adapters.MoviesAdapter
 import com.example.yassirmovies.databinding.ActivityMainBinding
 import com.example.yassirmovies.interfaces.MovieOnClickListener
 import com.example.yassirmovies.model.Movie
-import com.example.yassirmovies.model.Movies
+import com.example.yassirmovies.model.MoviesResponse
 import com.example.yassirmovies.ui.details.DetailsActivity
 
 
@@ -33,11 +33,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.recyclerViewMoviesTrending.adapter = moviesAdapter
         binding.recyclerViewMoviesTrending.layoutManager = linearLayoutManager
-        moviesViewModel.getTrendingMovies()
+        moviesViewModel.getTrendingMovies("c9856d0cb57c3f14bf75bdc6c063b8f3")
 
-        moviesViewModel.moviesMutableLiveData.observe(this ,object :Observer<Movies>{
-            override fun onChanged(movies: Movies) {
-                moviesAdapter.setMoviesList(movies.results)
+        moviesViewModel.moviesResponseMutableLiveData.observe(this ,object :Observer<MoviesResponse>{
+            override fun onChanged(moviesResponse: MoviesResponse) {
+                moviesAdapter.setMoviesList(moviesResponse.results)
                 binding.progressLoading.visibility = View.GONE
             }
         })

@@ -1,13 +1,14 @@
 package com.example.yassirmovies.data
 
-import com.example.yassirmovies.model.Movies
+import com.example.yassirmovies.model.DetailMovieResponse
+import com.example.yassirmovies.model.MoviesResponse
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MovieClient {
+class MoviesClient {
     private var baseUel:String = "https://api.themoviedb.org/3/"
-    private var instance:MovieClient? = null
+    private var instance:MoviesClient? = null
     private var moviesInterface:MoviesInterface? = null
 
     init {
@@ -17,18 +18,23 @@ class MovieClient {
         moviesInterface = retrofit.create(MoviesInterface::class.java)
     }
 
-    fun getInstance():MovieClient
+    fun getInstance():MoviesClient
     {
         if (null == instance)
         {
-            instance = MovieClient()
+            instance = MoviesClient()
         }
         return instance!!
     }
 
-    fun getMovies(apiKey:String):Call<Movies>
+    fun getTrendingMovies(apiKey:String):Call<MoviesResponse>
     {
         return moviesInterface!!.getTrendingMovies(apiKey)
+    }
+
+    fun getMovieDetailsById(id:Int ,apiKey:String):Call<DetailMovieResponse>
+    {
+        return moviesInterface!!.getMovieDetailsById(id ,apiKey)
     }
 
 
