@@ -2,8 +2,6 @@ package com.example.yassirmovies.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +14,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.yassirmovies.R
+import com.example.yassirmovies.helper.Utils
+import com.example.yassirmovies.interfaces.MovieOnClickListener
 import com.example.yassirmovies.model.Movie
 import kotlin.math.roundToInt
 
 class MoviesAdapter:RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
-    var arrayMovies = arrayListOf<Movie>()
-    lateinit var context:Context
+    private var arrayMovies = arrayListOf<Movie>()
+    private lateinit var context:Context
+    private lateinit var movieOnClickListener: MovieOnClickListener
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
         context = parent.context
         return MoviesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.card_movie ,parent ,false))
@@ -55,22 +56,13 @@ class MoviesAdapter:RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
 
         val score = (arrayMovies[position].vote_average*10).roundToInt()
 
-        holder.progressVoteAverage.progress = (arrayMovies[position].vote_average*10).toInt()
-        holder.progressVoteAverage.progressTintList = getColorByUserScore(score)
+        holder.progressVoteAverage.progress = score
+        holder.progressVoteAverage.progressTintList = Utils().getColorByUserScore(score)
         holder.userScore.text = "${score}%"
-    }
 
-    fun getColorByUserScore(score:Int):ColorStateList
-    {
-        if (score < 70)
-        {
-            return ColorStateList.valueOf(Color.parseColor("#FFDF72"))
+        holder.itemView.setOnClickListener {
+            movieOnClickListener.onClick(arrayMovies[position])
         }
-        else if (score > 70)
-        {
-            return ColorStateList.valueOf(Color.parseColor("#61C688"))
-        }
-        return ColorStateList.valueOf(Color.WHITE)
     }
 
     override fun getItemCount(): Int {
@@ -79,11 +71,11 @@ class MoviesAdapter:RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
 
     class MoviesViewHolder(itemView:View):RecyclerView.ViewHolder(itemView)
     {
-        val title = itemView.findViewById<TextView>(R.id.textViewTitle)
-        val releaseDate = itemView.findViewById<TextView>(R.id.textViewReleaseDate)
-        val imagePoster = itemView.findViewById<ImageView>(R.id.imageViewPoster)
-        val progressVoteAverage = itemView.findViewById<ProgressBar>(R.id.progressVoteAverage)
-        val userScore = itemView.findViewById<TextView>(R.id.textViewUserScore)
+        internal val title = itemView.findViewById<TextView>(R.id.textViewTitle)
+        internal val releaseDate = itemView.findViewById<TextView>(R.id.textViewReleaseDate)
+        internal val imagePoster = itemView.findViewById<ImageView>(R.id.imageViewPoster)
+        internal val progressVoteAverage = itemView.findViewById<ProgressBar>(R.id.progressVoteAverage)
+        internal val userScore = itemView.findViewById<TextView>(R.id.textViewUserScore)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -91,6 +83,11 @@ class MoviesAdapter:RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
     {
         this.arrayMovies = arrayOfMovies
         notifyDataSetChanged()
+    }
+
+    fun onClickMovie(listener: MovieOnClickListener)
+    {
+        this.movieOnClickListener = listener
     }
 
 }

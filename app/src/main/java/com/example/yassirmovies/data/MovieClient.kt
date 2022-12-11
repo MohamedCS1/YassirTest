@@ -4,33 +4,31 @@ import com.example.yassirmovies.model.Movies
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 
-class MovieClient() {
-    var BASEURL:String = "https://api.themoviedb.org/3/"
-    var INSTANCE:MovieClient? = null
-    var MoviesInterface:MoviesInterface? = null
+class MovieClient {
+    private var baseUel:String = "https://api.themoviedb.org/3/"
+    private var instance:MovieClient? = null
+    private var moviesInterface:MoviesInterface? = null
 
     init {
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASEURL)
+            .baseUrl(baseUel)
             .addConverterFactory(GsonConverterFactory.create()).build()
-        MoviesInterface = retrofit.create(com.example.yassirmovies.data.MoviesInterface::class.java)
+        moviesInterface = retrofit.create(MoviesInterface::class.java)
     }
 
     fun getInstance():MovieClient
     {
-        if (null == INSTANCE)
+        if (null == instance)
         {
-            INSTANCE = MovieClient()
+            instance = MovieClient()
         }
-        return INSTANCE!!
+        return instance!!
     }
 
     fun getMovies(apiKey:String):Call<Movies>
     {
-        return MoviesInterface!!.getTrendingMovies(apiKey)
+        return moviesInterface!!.getTrendingMovies(apiKey)
     }
 
 

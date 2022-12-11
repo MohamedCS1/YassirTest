@@ -1,23 +1,26 @@
 package com.example.yassirmovies.ui.main
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.yassirmovies.adapters.MoviesAdapter
 import com.example.yassirmovies.databinding.ActivityMainBinding
+import com.example.yassirmovies.interfaces.MovieOnClickListener
+import com.example.yassirmovies.model.Movie
 import com.example.yassirmovies.model.Movies
+import com.example.yassirmovies.ui.details.DetailsActivity
 
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var moviesAdapter:MoviesAdapter
-    lateinit var linearLayoutManager: LinearLayoutManager
-    lateinit var binding: ActivityMainBinding
-    lateinit var mainViewModel:MainViewModel
+    private lateinit var moviesAdapter:MoviesAdapter
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var moviesViewModel:MoviesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,17 +29,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         moviesAdapter = MoviesAdapter()
         linearLayoutManager = LinearLayoutManager(this)
-        mainViewModel = MainViewModel(this.application)
+        moviesViewModel = MoviesViewModel(this.application)
 
         binding.recyclerViewMoviesTrending.adapter = moviesAdapter
         binding.recyclerViewMoviesTrending.layoutManager = linearLayoutManager
-        mainViewModel.getTrendingMovies()
+        moviesViewModel.getTrendingMovies()
 
-        mainViewModel.moviesMutableLiveData.observe(this ,object :Observer<Movies>{
+        moviesViewModel.moviesMutableLiveData.observe(this ,object :Observer<Movies>{
             override fun onChanged(movies: Movies) {
-                Log.d("currentResult",movies.results.toString())
                 moviesAdapter.setMoviesList(movies.results)
                 binding.progressLoading.visibility = View.GONE
+            }
+        })
+
+        moviesAdapter.onClickMovie(object :MovieOnClickListener{
+            override fun onClick(movie: Movie) {
+                val intent = Intent(this@MainActivity ,DetailsActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("movie" ,movie)
+                applicationContext.startActivity(intent)
             }
         })
     }
